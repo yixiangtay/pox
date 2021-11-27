@@ -55,6 +55,7 @@ import socket
 import posixpath
 import urllib.request, urllib.parse, urllib.error
 import cgi
+import html
 import errno
 from io import StringIO, BytesIO
 
@@ -209,7 +210,7 @@ class POXCookieGuardMixin (object):
       please <a href="%s">continue to %s</a>.
       </body>
       </html>
-      """ % (target, cgi.escape(target))).encode())
+      """ % (target, html.escape(target))).encode())
 
   def _do_cookieguard_set_cookie (self, requested, bad_cookie):
     """
@@ -401,10 +402,10 @@ class CoreHandler (SplitRequestHandler):
     r += "<ul>"
     for k in sorted(core.components):
       v = core.components[k]
-      r += "<li>%s - %s</li>\n" % (cgi.escape(str(k)), cgi.escape(str(v)))
+      r += "<li>%s - %s</li>\n" % (html.escape(str(k)), html.escape(str(v)))
     r += "</ul>\n\n<h2>Web Prefixes</h2>"
     r += "<ul>"
-    m = [list(map(cgi.escape, map(str, [x[0],x[1],x[1].format_info(x[3])])))
+    m = [list(map(html.escape, map(str, [x[0],x[1],x[1].format_info(x[3])])))
          for x in self.args.matches]
     m.sort()
     for v in m:
@@ -457,7 +458,7 @@ class StaticContentHandler (SplitRequestHandler, SimpleHTTPRequestHandler):
     d.sort(key=str.lower)
     r = StringIO()
     r.write("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 3.2 Final//EN\">\n")
-    path = posixpath.join(self.prefix, cgi.escape(self.path).lstrip("/"))
+    path = posixpath.join(self.prefix, html.escape(self.path).lstrip("/"))
     r.write("<html><head><title>" + path + "</title></head>\n")
     r.write("<body><pre>")
     parts = path.rstrip("/").split("/")
@@ -465,7 +466,7 @@ class StaticContentHandler (SplitRequestHandler, SimpleHTTPRequestHandler):
     for i,part in enumerate(parts):
       link = urllib.parse.quote("/".join(parts[:i+1]))
       if i > 0: part += "/"
-      r.write('<a href="%s">%s</a>' % (link, cgi.escape(part)))
+      r.write('<a href="%s">%s</a>' % (link, html.escape(part)))
     r.write("\n" + "-" * (0+len(path)) + "\n")
 
     dirs = []
@@ -479,7 +480,7 @@ class StaticContentHandler (SplitRequestHandler, SimpleHTTPRequestHandler):
 
     def entry (n, rest=''):
       link = urllib.parse.quote(n)
-      name = cgi.escape(n)
+      name = html.escape(n)
       r.write('<a href="%s">%s</a>\n' % (link,name+rest))
 
     for f in dirs:
