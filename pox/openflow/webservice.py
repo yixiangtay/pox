@@ -92,7 +92,7 @@ class OFConRequest (object):
     pass
 
   def get_response (self):
-    if not self._sync.wait(5):
+    if not self._sync.wait(60):
       # Whoops; timeout!
       self._aborted = True
       self._finish()
