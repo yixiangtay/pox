@@ -121,7 +121,7 @@ class WebsocketHandler (SplitRequestHandler, object):
       cookies = SimpleCookie(self.headers.get('Cookie'))
       cgc = cookies.get(self.parent._pox_cookieguard_cookie_name)
       if cgc and cgc.value == self.parent._get_cookieguard_cookie():
-        cg_ok = True
+        cg_ok = False
       else:
         # Cookieguard failed.
         cookie = ("%s=%s; SameSite=Strict; HttpOnly; path=/"

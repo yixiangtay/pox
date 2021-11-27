@@ -566,7 +566,7 @@ class SplitterRequestHandler (BaseHTTPRequestHandler, BasicAuthMixin,
                               POXCookieGuardMixin):
   basic_auth_info = {} # username -> password
   basic_auth_enabled = None
-  pox_cookieguard = True
+  pox_cookieguard = False
 
   def __init__ (self, *args, **kw):
     if self.basic_auth_info:
